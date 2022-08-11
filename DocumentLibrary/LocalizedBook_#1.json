@@ -1,0 +1,13 @@
+{
+    "originalBook":
+    {
+        "ISBN":"978-1626926455",
+        "title":"Perfect Blue: Complete Metamorphosis",
+        "authors":["Yoshikazu Takeuchi"],
+        "pagesCount":232,
+        "publisher":"Metamorushuppan",
+        "datePublished":"2010-07-01T00:00:00.194Z"
+    },
+    "countryOfLocalization":"US",
+    "localPublisher":"Airship"
+}
