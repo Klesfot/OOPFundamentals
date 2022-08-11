@@ -8,6 +8,7 @@ public class FileStorageManager : IStorageManager
     private List<IDocumentCard<Patent>> PatentDocuments { get; set; }
     private List<IDocumentCard<Book>> BookDocuments { get; set; }
     private List<IDocumentCard<LocalizedBook>> LocalizedBookDocuments { get; set; }
+    private List<IDocumentCard<Magazine>> MagazineDocuments { get; set; }
 
     public FileStorageManager()
     {
@@ -31,12 +32,18 @@ public class FileStorageManager : IStorageManager
         var foundLocalizedBooks = LocalizedBookDocuments.Where(d => d.DocumentNumber == cardId);
         return foundLocalizedBooks.ToList();
     }
+    public List<IDocumentCard<Magazine>> FindMagazineDocumentCardsByNumber(int cardId)
+    {
+        var foundMagazines = MagazineDocuments.Where(d => d.DocumentNumber == cardId);
+        return foundMagazines.ToList();
+    }
 
     private void GetDocumentCards()
     {
         PatentDocuments = new List<IDocumentCard<Patent>>();
         BookDocuments = new List<IDocumentCard<Book>>();
         LocalizedBookDocuments = new List<IDocumentCard<LocalizedBook>>();
+        MagazineDocuments = new List<IDocumentCard<Magazine>>();
         var libraryDirectory = new DirectoryInfo(@"C:\DocumentLibrary");
         var files = libraryDirectory.GetFiles("*.json");
 
@@ -82,6 +89,17 @@ public class FileStorageManager : IStorageManager
                     Document = deserializedLocalizedBook ?? throw new InvalidOperationException()
                 };
                 LocalizedBookDocuments.Add(newLocalizedBookDocCard);
+            }
+
+            if (file.Name.StartsWith("Magazine"))
+            {
+                var deserializedMagazine= JsonConvert.DeserializeObject<Magazine>(File.ReadAllText(file.FullName));
+                var newMagazineDocCard = new DocumentCard<Magazine>
+                {
+                    DocumentNumber = documentId,
+                    Document = deserializedMagazine ?? throw new InvalidOperationException()
+                };
+                MagazineDocuments.Add(newMagazineDocCard);
             }
         }
     }

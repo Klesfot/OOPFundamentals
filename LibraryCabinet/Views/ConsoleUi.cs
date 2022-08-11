@@ -38,8 +38,9 @@ public class ConsoleUi : ILibraryUi
                             var patents = _storageManager.FindPatentDocumentCardsByNumber(documentId);
                             var books = _storageManager.FindBookDocumentCardsByNumber(documentId);
                             var localizedBooks = _storageManager.FindLocalizedBookDocumentCardsByNumber(documentId);
+                            var magazines = _storageManager.FindMagazineDocumentCardsByNumber(documentId);
 
-                            DisplaySearchResults(patents, books, localizedBooks);
+                            DisplaySearchResults(patents, books, localizedBooks, magazines);
                         }
                     } break;
                     case "/quit":
@@ -52,7 +53,7 @@ public class ConsoleUi : ILibraryUi
     }
 
     private void DisplaySearchResults(List<IDocumentCard<Patent>> patents, List<IDocumentCard<Book>> books,
-        List<IDocumentCard<LocalizedBook>> localizedBooks)
+        List<IDocumentCard<LocalizedBook>> localizedBooks, List<IDocumentCard<Magazine>> magazines)
     {
         Console.WriteLine($"Found {patents.Count} patents:\n");
         foreach (var patent in patents)
@@ -109,6 +110,16 @@ public class ConsoleUi : ILibraryUi
                               $"\nCountry of localization: {localizedBook.Document.CountryOfLocalization}" +
                               $"\nLocal publisher: {localizedBook.Document.LocalPublisher}" +
                               $"\nDate published: {localizedBook.Document.OriginalBook.DatePublished}");
+        }
+
+        Console.WriteLine($"\n\n{magazines.Count} magazines:\n");
+        foreach (var magazine in magazines)
+        {
+            Console.WriteLine($"Document number {magazine.DocumentNumber} " +
+                              $"\nTitle: {magazine.Document.Title}" +
+                              $"\nPublisher: {magazine.Document.Publisher}" +
+                              $"\nRelease number: {magazine.Document.ReleaseNumber}" +
+                              $"\nPublish date: {magazine.Document.PublishDate}");
         }
     }
 }

@@ -7,4 +7,5 @@ public interface IStorageManager
     List<IDocumentCard<Patent>> FindPatentDocumentCardsByNumber(int cardId);
     List<IDocumentCard<Book>> FindBookDocumentCardsByNumber(int cardId);
     List<IDocumentCard<LocalizedBook>> FindLocalizedBookDocumentCardsByNumber(int cardId);
+    List<IDocumentCard<Magazine>> FindMagazineDocumentCardsByNumber(int cardId);
 }
