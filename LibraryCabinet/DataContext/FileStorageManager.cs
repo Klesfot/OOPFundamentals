@@ -42,7 +42,14 @@ public class FileStorageManager : IStorageManager
 
         foreach (var file in files)
         {
-            var documentId = Convert.ToInt32(file.Name.Split('_').First());
+            var valuesToReplace = new [] { "#", ".json" };
+            var formattedFileName = file.Name;
+            foreach (var value in valuesToReplace)
+            {
+                formattedFileName = formattedFileName.Replace(value, string.Empty);
+            }
+            
+            var documentId = Convert.ToInt32(formattedFileName.Split('_')[1]);
 
             if (file.Name.StartsWith("Patent"))
             {
