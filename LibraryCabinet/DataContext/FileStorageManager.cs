@@ -1,4 +1,5 @@
 ﻿using LibraryCabinet.Models;
+using Newtonsoft.Json;
 
 namespace LibraryCabinet.DataContext;
 
@@ -10,43 +11,71 @@ public class FileStorageManager : IStorageManager
 
     public FileStorageManager()
     {
-        // GetDocumentCards() -- searches FS for all files and fills up ^ collections
+        GetDocumentCards();
     }
 
     public List<IDocumentCard<Patent>> FindPatentDocumentCardsByNumber(int cardId)
     {
-        // var foundPatents = Patents.Where(d => d.DocumentNumber == cardId);
-        // return foundDocumentCards
-
-        throw new NotImplementedException();
+        var foundPatents = PatentDocuments.Where(d => d.DocumentNumber == cardId);
+        return foundPatents.ToList();
     }
 
     public List<IDocumentCard<Book>> FindBookDocumentCardsByNumber(int cardId)
     {
-        // var foundPatents = Patents.Where(d => d.DocumentNumber == cardId);
-        // return foundDocumentCards
-
-        throw new NotImplementedException();
+        var foundBooks = BookDocuments.Where(d => d.DocumentNumber == cardId);
+        return foundBooks.ToList();
     }
 
     public List<IDocumentCard<LocalizedBook>> FindLocalizedBookDocumentCardsByNumber(int cardId)
     {
-        // var foundPatents = Patents.Where(d => d.DocumentNumber == cardId);
-        // return foundDocumentCards
-
-        throw new NotImplementedException();
+        var foundLocalizedBooks = LocalizedBookDocuments.Where(d => d.DocumentNumber == cardId);
+        return foundLocalizedBooks.ToList();
     }
 
-    private string GetDocumentCards()
+    private void GetDocumentCards()
     {
-        // List<IDocument> patents;
-        // foreach(var file in files)
-        // {
-        //      if (file.Name.Is("Patent")) { patents.Add(new DocumentCard<Patent>(file.FileNumber, new Patent(parse json for Patent values here))) }
-        //      if (file.Name.Is("Book")) { ... }
-        //      ...
-        // }
+        PatentDocuments = new List<IDocumentCard<Patent>>();
+        BookDocuments = new List<IDocumentCard<Book>>();
+        LocalizedBookDocuments = new List<IDocumentCard<LocalizedBook>>();
+        var libraryDirectory = new DirectoryInfo(@"C:\DocumentLibrary");
+        var files = libraryDirectory.GetFiles("*.json");
 
-        throw new NotImplementedException();
+        foreach (var file in files)
+        {
+            var documentId = Convert.ToInt32(file.Name.Split('_').First());
+
+            if (file.Name.StartsWith("Patent"))
+            {
+                var deserializedPatent = JsonConvert.DeserializeObject<Patent>(File.ReadAllText(file.FullName));
+                var newPatentDocCard = new DocumentCard<Patent>
+                {
+                    DocumentNumber = documentId,
+                    Document = deserializedPatent ?? throw new InvalidOperationException()
+                };
+                PatentDocuments.Add(newPatentDocCard);
+            }
+
+            if (file.Name.StartsWith("Book"))
+            {
+                var deserializedBook = JsonConvert.DeserializeObject<Book>(File.ReadAllText(file.FullName));
+                var newBookDocCard = new DocumentCard<Book>
+                {
+                    DocumentNumber = documentId,
+                    Document = deserializedBook ?? throw new InvalidOperationException()
+                };
+                BookDocuments.Add(newBookDocCard);
+            }
+
+            if (file.Name.StartsWith("LocalizedBook"))
+            {
+                var deserializedLocalizedBook = JsonConvert.DeserializeObject<LocalizedBook>(File.ReadAllText(file.FullName));
+                var newLocalizedBookDocCard = new DocumentCard<LocalizedBook>
+                {
+                    DocumentNumber = documentId,
+                    Document = deserializedLocalizedBook ?? throw new InvalidOperationException()
+                };
+                LocalizedBookDocuments.Add(newLocalizedBookDocCard);
+            }
+        }
     }
 }
