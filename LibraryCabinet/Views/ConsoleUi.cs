@@ -60,7 +60,7 @@ public class ConsoleUi : ILibraryUi
         {
             Console.WriteLine($"Document number {patent.DocumentNumber} " +
                               $"\nTitle: {patent.Document.Title}" +
-                              $"\nAuthors: ");
+                              "\nAuthors: ");
 
             foreach (var author in patent.Document.Authors)
             {
@@ -78,7 +78,7 @@ public class ConsoleUi : ILibraryUi
             Console.WriteLine($"Document number {book.DocumentNumber} " +
                               $"\nISBN: {book.Document.Isbn}" +
                               $"\nTitle: {book.Document.Title}" +
-                              $"\nAuthors: ");
+                              "\nAuthors: ");
 
 
             foreach (var author in book.Document.Authors)
@@ -91,13 +91,13 @@ public class ConsoleUi : ILibraryUi
                               $"\nDate published: {book.Document.DatePublished}");
         }
 
-        Console.WriteLine($"\n\n{books.Count} localized books:\n");
+        Console.WriteLine($"\n\n{localizedBooks.Count} localized books:\n");
         foreach (var localizedBook in localizedBooks)
         {
             Console.WriteLine($"Document number {localizedBook.DocumentNumber} " +
                               $"\nISBN: {localizedBook.Document.OriginalBook.Isbn}" +
                               $"\nTitle: {localizedBook.Document.OriginalBook.Title}" +
-                              $"\nAuthors: ");
+                              "\nAuthors: ");
 
 
             foreach (var author in localizedBook.Document.OriginalBook.Authors)
