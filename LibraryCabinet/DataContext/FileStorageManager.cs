@@ -5,9 +5,9 @@ namespace LibraryCabinet.DataContext;
 
 public class FileStorageManager : IStorageManager
 {
-    public List<IDocumentCard<Patent>> PatentDocuments { get; set; }
-    public List<IDocumentCard<Book>> BookDocuments { get; set; }
-    public List<IDocumentCard<LocalizedBook>> LocalizedBookDocuments { get; set; }
+    private List<IDocumentCard<Patent>> PatentDocuments { get; set; }
+    private List<IDocumentCard<Book>> BookDocuments { get; set; }
+    private List<IDocumentCard<LocalizedBook>> LocalizedBookDocuments { get; set; }
 
     public FileStorageManager()
     {
